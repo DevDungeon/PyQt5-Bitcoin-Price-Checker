@@ -5,41 +5,37 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-import requests as requests
+
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSlot, QThread, pyqtSignal
-
-
-class FetchPrice(QThread):
-    done_signal = pyqtSignal(str)
-
-    def __init__(self):
-        QThread.__init__(self)
-
-    def run(self):
-        data = requests.get('https://api.coindesk.com/v1/bpi/currentprice/BTC.json').json()
-        price = data['bpi']['USD']['rate']
-        self.done_signal.emit(price)
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(299, 183)
+        MainWindow.resize(534, 199)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.priceCheckButton = QtWidgets.QPushButton(self.centralwidget)
-        self.priceCheckButton.setGeometry(QtCore.QRect(80, 70, 89, 25))
+        self.priceCheckButton.setGeometry(QtCore.QRect(130, 80, 231, 61))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.priceCheckButton.setFont(font)
         self.priceCheckButton.setObjectName("priceCheckButton")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(20, 20, 131, 21))
+        self.label.setGeometry(QtCore.QRect(30, 30, 231, 31))
+        font = QtGui.QFont()
+        font.setPointSize(19)
+        self.label.setFont(font)
         self.label.setObjectName("label")
         self.bitcoinPriceLabel = QtWidgets.QLabel(self.centralwidget)
-        self.bitcoinPriceLabel.setGeometry(QtCore.QRect(160, 20, 67, 17))
+        self.bitcoinPriceLabel.setGeometry(QtCore.QRect(250, 30, 191, 31))
+        font = QtGui.QFont()
+        font.setPointSize(19)
+        self.bitcoinPriceLabel.setFont(font)
         self.bitcoinPriceLabel.setObjectName("bitcoinPriceLabel")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 299, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 534, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -59,20 +55,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.priceCheckButton.clicked.connect(self.update_price)
         self.actionExit.triggered.connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-
-    def update_price(self):
-        thread = FetchPrice()
-        thread.done_signal.connect(self.price_fetched)
-        thread.start()
-        thread.wait()
-
-    def price_fetched(self, result):
-        self.bitcoinPriceLabel.setText('$%s' % result)
-
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -85,3 +69,5 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionExit.setShortcut(_translate("MainWindow", "Ctrl+Q"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
+
+
