@@ -9,10 +9,11 @@ app = QtWidgets.QApplication(sys.argv)
 
 
 
-# class MainSub(Ui_MainWindow):
+# class MainSub(QMainWindow, Ui_MainWindow):
 #     def __init__(self):
-#         super().__init__()
-#
+#         super(MainSub, self).__init__()
+
+
 
 
 
