@@ -1,7 +1,7 @@
 import requests
 from PyQt5 import QtWidgets, QtCore
 import sys
-from PyQt5.QtCore import pyqtSlot, QObject, pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, QThread
 from PyQt5.QtWidgets import QMainWindow
 from main_window import Ui_MainWindow
 
@@ -38,18 +38,12 @@ class RealMainWindow(QMainWindow, Ui_MainWindow):
         self.bitcoinPriceLabel.setText('$%s' % result)
 
 
+if __name__ == '__main__':
+    MainWindow = QtWidgets.QMainWindow()
 
+    ui = RealMainWindow()
+    ui.setupUi(MainWindow)
+    ui.setup_slots()
+    MainWindow.show()
 
-
-
-
-
-MainWindow = QtWidgets.QMainWindow()
-
-ui = RealMainWindow()
-ui.setupUi(MainWindow)
-ui.setup_slots()
-MainWindow.show()
-
-
-sys.exit(app.exec_())
+    sys.exit(app.exec_())
