@@ -1,12 +1,13 @@
 import requests
 import sys
-from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from main_window import Ui_MainWindow
+from Qt.QtCore import Signal, QThread
+from Qt.QtWidgets import QApplication
+from Qt import QtCompat
 
 
 class FetchPrice(QThread):
-    done_signal = pyqtSignal(str)
+
+    done_signal = Signal(str)
 
     def __init__(self):
         QThread.__init__(self)
@@ -17,13 +18,11 @@ class FetchPrice(QThread):
         self.done_signal.emit(price)
 
 
-class RealMainWindow(QMainWindow):
+class RealMainWindow:
     def __init__(self):
-        super().__init__()
 
         # Setup ui
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui = QtCompat.loadUi("templates/main_window.ui")
 
         # Create fetch thread
         self.thread = FetchPrice()
@@ -34,8 +33,8 @@ class RealMainWindow(QMainWindow):
     def update_price(self):
         print('Updating price')
         self.ui.priceCheckButton.setEnabled(False)
-        self.thread.done_signal.connect(self.price_fetched)
         self.thread.start()
+        self.thread.done_signal.connect(self.price_fetched)
 
     def price_fetched(self, result):
         self.ui.bitcoinPriceLabel.setText('$%s' % result)
@@ -46,6 +45,5 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     real_main_window = RealMainWindow()
-    real_main_window.show()
+    real_main_window.ui.show()
     sys.exit(app.exec_())
-
