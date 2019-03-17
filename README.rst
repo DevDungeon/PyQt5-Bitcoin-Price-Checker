@@ -3,7 +3,7 @@ PyQt5 Bitcoin Price Checker
 
 Install PyQt5 dependencies::
 
-  pip install pyqt5
+  pip install pyqt5 requests
 
 To rebuild the designer file if modified, run::
 
