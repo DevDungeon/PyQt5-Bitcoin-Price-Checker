@@ -39,7 +39,7 @@ class RealMainWindow(QMainWindow):
 
     def price_fetched(self, result):
         self.ui.bitcoinPriceLabel.setText('$%s' % result)
-        self.ui.priceCheckButton.setEnabled(False)
+        self.ui.priceCheckButton.setEnabled(True)
 
 
 if __name__ == '__main__':
