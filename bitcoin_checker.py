@@ -1,11 +1,8 @@
 import requests
-from PyQt5 import QtWidgets, QtCore
 import sys
 from PyQt5.QtCore import pyqtSignal, QThread
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from main_window import Ui_MainWindow
-
-app = QtWidgets.QApplication(sys.argv)
 
 
 class FetchPrice(QThread):
@@ -20,30 +17,35 @@ class FetchPrice(QThread):
         self.done_signal.emit(price)
 
 
-class RealMainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+class RealMainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-    def setup_slots(self):
-        self.priceCheckButton.clicked.connect(self.update_price)
+        # Setup ui
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
+        # Create fetch thread
+        self.thread = FetchPrice()
+
+        # Connect signals
+        self.ui.priceCheckButton.clicked.connect(self.update_price)
 
     def update_price(self):
         print('Updating price')
-        thread = FetchPrice()
-        thread.done_signal.connect(self.price_fetched)
-        thread.start()
-        thread.wait()
+        self.ui.priceCheckButton.setEnabled(False)
+        self.thread.done_signal.connect(self.price_fetched)
+        self.thread.start()
 
     def price_fetched(self, result):
-        self.bitcoinPriceLabel.setText('$%s' % result)
+        self.ui.bitcoinPriceLabel.setText('$%s' % result)
+        self.ui.priceCheckButton.setEnabled(False)
 
 
 if __name__ == '__main__':
-    MainWindow = QtWidgets.QMainWindow()
 
-    ui = RealMainWindow()
-    ui.setupUi(MainWindow)
-    ui.setup_slots()
-    MainWindow.show()
-
+    app = QApplication(sys.argv)
+    real_main_window = RealMainWindow()
+    real_main_window.show()
     sys.exit(app.exec_())
+
